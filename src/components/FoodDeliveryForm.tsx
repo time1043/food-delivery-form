@@ -1,5 +1,8 @@
+import type { SelectOptionType } from "@/types";
 import type { FieldErrors } from "react-hook-form";
 import { useForm } from "react-hook-form";
+import SelectField from "./controls/SelectField";
+import TextField from "./controls/TextField";
 import RenderCount from "./RenderCount";
 
 type FoodDeliveryFormType = {
@@ -7,7 +10,24 @@ type FoodDeliveryFormType = {
   customerName: string;
   mobile: string;
   email: string;
+  paymentMethod: string;
+  deliveryIn: number | "";
 };
+
+// const paymentOptions: SelectOptionType[] = ["", "online", "COD"];
+const paymentOptions: SelectOptionType[] = [
+  { value: "", text: "Select" },
+  { value: "online", text: "Paid Online" },
+  { value: "COD", text: "Cash On Delivery" },
+];
+
+const deliveryInOptions: SelectOptionType[] = [
+  { value: "", text: "Select" },
+  { value: 30, text: "Half an Hour" },
+  { value: 60, text: "1 Hour" },
+  { value: 120, text: "2 Hour" },
+  { value: 180, text: "3 Hour" },
+];
 
 const RenderCountComponent = RenderCount();
 
@@ -17,15 +37,13 @@ function FoodDeliveryForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<FoodDeliveryFormType>({
-    // mode: "onSubmit",
-    // reValidateMode: "onChange",
-    // shouldFocusError: true,
-    criteriaMode: "all",
     defaultValues: {
       orderNo: new Date().valueOf(),
       customerName: "",
       mobile: "",
       email: "",
+      paymentMethod: "",
+      deliveryIn: "",
     },
   });
 
@@ -50,122 +68,72 @@ function FoodDeliveryForm() {
       {/* .row.mb-2>.col*2 */}
       <div className="row mb-2">
         <div className="col">
-          <div className="form-floating">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Order No ..."
-              disabled
-              {...register("orderNo")}
-            />
-            <label>Order No</label>
-            {errors.orderNo && (
-              <div className="invalid-feedback text-start">
-                {errors.orderNo?.message}
-              </div>
-            )}
-          </div>
+          <TextField label="Order No" disabled {...register("orderNo")} />
         </div>
 
         <div className="col">
-          <div className="form-floating">
-            <input
-              type="text"
-              className={`form-control ${errors.mobile ? "is-invalid" : ""}`}
-              placeholder="Mobile ..."
-              {...register("mobile", {
-                required: "Mobile is required.",
-                minLength: { value: 10, message: "Must be 10 digits." },
-                maxLength: { value: 11, message: "Must be 11 digits." },
-              })}
-            />
-            <label>Mobile</label>
-            {errors.mobile && (
-              <div className="invalid-feedback text-start">
-                {errors.mobile?.message}
-              </div>
-            )}
-          </div>
+          <TextField
+            label="Mobile"
+            {...register("mobile", { required: "Mobile is required." })}
+            error={errors.mobile}
+          />
         </div>
       </div>
 
       <div className="row mb-2">
         <div className="col">
-          <div className="form-floating">
-            <input
-              type="text"
-              className={`form-control ${errors.customerName ? "is-invalid" : ""}`}
-              placeholder="Customer Name ..."
-              {...register("customerName", {
-                required: "Customer Name is required.",
-                minLength: { value: 3, message: "Must be at least 3 chars." },
-                pattern: {
-                  value: /[A-Z]/,
-                  message: "Must include at least one uppercase letter.",
-                },
-                // validate: (value) =>
-                //   value.trim() !== "" || "Customer Name cannot be empty spaces",
-              })}
-            />
-            <label>Customer Name</label>
-            {errors.customerName?.types &&
-              // <>
-              //   <div className="invalid-feedback text-start">
-              //     {errors.customerName?.types.minLength}
-              //   </div>
-              //   <div className="invalid-feedback text-start">
-              //     {errors.customerName?.types.pattern}
-              //   </div>
-              // </>
-              Object.entries(errors.customerName.types).map(([type, msg]) => (
-                <div className="invalid-feedback text-start" key={type}>
-                  {msg}
-                </div>
-              ))}
-          </div>
+          <TextField
+            label="Customer Name"
+            {...register("customerName", {
+              required: "Customer Name is required.",
+            })}
+            error={errors.customerName}
+          />
         </div>
 
         <div className="col">
-          <div className="form-floating">
-            <input
-              type="email"
-              className={`form-control ${errors.email ? "is-invalid" : ""}`}
-              placeholder="Email ..."
-              {...register("email", {
-                required: "Email is required.",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Incorrect email format.",
-                },
-                validate: {
-                  notFake: (value) => {
-                    return (
-                      value !== "email@gmail.com" || "Don't use fake email."
-                    );
-                    // if (value === "email@gmail.com")
-                    //   return "Particular email is blocked.";
-                    // else return true;
-                  },
-                  notFromBlackListedDomain: (value, values) => {
-                    // values.customerName
-                    return (
-                      (!value.endsWith("@xyz.com") &&
-                        !value.endsWith("@example.com")) ||
-                      "Domain is blocked."
-                    );
-                  },
-                },
-              })}
-            />
-            <label>Email</label>
-            {errors.email && (
-              <div className="invalid-feedback text-start">
-                {errors.email?.message}
-              </div>
-            )}
-          </div>
+          <TextField
+            label="Email"
+            {...register("email", {
+              required: "Email is required.",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Incorrect email format.",
+              },
+            })}
+            error={errors.email}
+          />
         </div>
       </div>
+
+      <div>list of ordered food items</div>
+      <div className="text-start fw-bold mt-4 mb-2">Checkout Details</div>
+      <div className="row mb-2">
+        <div className="col">
+          <SelectField
+            options={paymentOptions}
+            label="Payment Method"
+            {...register("paymentMethod", {
+              required: "This field is required.",
+            })}
+            error={errors.paymentMethod}
+          />
+        </div>
+
+        <div className="col">
+          <SelectField
+            options={deliveryInOptions}
+            label="Delivery Within"
+            {...register("deliveryIn", {
+              required: "This field is required.",
+              valueAsNumber: true,
+            })}
+            error={errors.deliveryIn}
+          />
+        </div>
+      </div>
+
+      <div className="text-start fw-bold mt-4 mb-2">Delivery Address</div>
 
       <button type="submit" className="btn btn-primary">
         Submit
