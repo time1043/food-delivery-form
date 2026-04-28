@@ -2,9 +2,9 @@ import RenderCount from "@/components/RenderCount";
 import type { FoodDeliveryFormType } from "@/types";
 import type { FieldErrors } from "react-hook-form";
 import { FormProvider, useForm } from "react-hook-form";
-import CheckoutForm from "./CheckoutForm";
-import DeliveryAddressForm from "./DeliveryAddressForm";
-import FoodDeliverMaster from "./FoodDeliverMaster";
+import CheckoutForm from "./components/CheckoutForm";
+import DeliveryAddressForm from "./components/DeliveryAddressForm";
+import FoodDeliverMaster from "./components/FoodDeliverMaster";
 
 const RenderCountComponent = RenderCount();
 

@@ -1,6 +1,6 @@
+import SelectField from "@/components/controls/SelectField";
 import type { CheckoutFormType, SelectOptionType } from "@/types";
 import { useFormContext } from "react-hook-form";
-import SelectField from "./controls/SelectField";
 
 // const paymentOptions: SelectOptionType[] = ["", "online", "COD"];
 const paymentOptions: SelectOptionType[] = [
