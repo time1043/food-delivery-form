@@ -12,6 +12,12 @@ type FoodDeliveryFormType = {
   email: string;
   paymentMethod: string;
   deliveryIn: number | "";
+  address: {
+    streetAddress: string;
+    landmark: string;
+    city: string;
+    state: string;
+  };
 };
 
 // const paymentOptions: SelectOptionType[] = ["", "online", "COD"];
@@ -44,6 +50,12 @@ function FoodDeliveryForm() {
       email: "",
       paymentMethod: "",
       deliveryIn: "",
+      address: {
+        streetAddress: "",
+        landmark: "",
+        city: "",
+        state: "",
+      },
     },
   });
 
@@ -70,7 +82,6 @@ function FoodDeliveryForm() {
         <div className="col">
           <TextField label="Order No" disabled {...register("orderNo")} />
         </div>
-
         <div className="col">
           <TextField
             label="Mobile"
@@ -90,7 +101,6 @@ function FoodDeliveryForm() {
             error={errors.customerName}
           />
         </div>
-
         <div className="col">
           <TextField
             label="Email"
@@ -119,7 +129,6 @@ function FoodDeliveryForm() {
             error={errors.paymentMethod}
           />
         </div>
-
         <div className="col">
           <SelectField
             options={deliveryInOptions}
@@ -134,6 +143,35 @@ function FoodDeliveryForm() {
       </div>
 
       <div className="text-start fw-bold mt-4 mb-2">Delivery Address</div>
+      <div className="row mb-3">
+        <div className="col">
+          <TextField
+            label="Street Address"
+            error={errors.address?.streetAddress}
+            {...register("address.streetAddress", {
+              required: "This field is required.",
+            })}
+          />
+        </div>
+        <div className="col">
+          <TextField
+            label="City"
+            error={errors.address?.city}
+            {...register("address.city", {
+              required: "This field is required.",
+            })}
+          />
+        </div>
+      </div>
+
+      <div className="row mb-3">
+        <div className="col">
+          <TextField label="Landmark" {...register("address.landmark")} />
+        </div>
+        <div className="col">
+          <TextField label="State" {...register("address.state")} />
+        </div>
+      </div>
 
       <button type="submit" className="btn btn-primary">
         Submit
