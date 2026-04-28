@@ -1,16 +1,25 @@
-import { useForm } from "react-hook-form";
 import type { FieldErrors } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import RenderCount from "./RenderCount";
 
 type FoodDeliveryFormType = {
+  orderNo: number;
   customerName: string;
   mobile: string;
+  email: string;
 };
 
 const RenderCountComponent = RenderCount();
 
 function FoodDeliveryForm() {
-  const { register, handleSubmit } = useForm<FoodDeliveryFormType>();
+  const { register, handleSubmit } = useForm<FoodDeliveryFormType>({
+    defaultValues: {
+      orderNo: new Date().valueOf(),
+      customerName: "",
+      mobile: "",
+      email: "",
+    },
+  });
 
   function onSumbit(formData: FoodDeliveryFormType) {
     console.log("form data", formData);
@@ -20,8 +29,6 @@ function FoodDeliveryForm() {
     console.log("errors", errors);
   }
 
-  // "handleSubmit" will validate your inputs before invoking "onSubmit"
-  // register your input into the hook by invoking the "register" function
   return (
     <form
       className="m-4"
@@ -31,28 +38,64 @@ function FoodDeliveryForm() {
       <h1>RHF</h1>
       <RenderCountComponent />
 
-      <div className="form-floating mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Customer Name ..."
-          {...register("customerName", {
-            required: "Customer name is required.",
-          })}
-        />
-        <label>Customer Name</label>
+      {/* .row.mb-2>.col*2 */}
+      <div className="row mb-2">
+        <div className="col">
+          <div className="form-floating">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Order No ..."
+              disabled
+              {...register("orderNo")}
+            />
+            <label>Order No</label>
+          </div>
+        </div>
+
+        <div className="col">
+          <div className="form-floating">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Mobile ..."
+              {...register("mobile", {
+                required: "Mobile number is required.",
+              })}
+            />
+            <label>Mobile</label>
+          </div>
+        </div>
       </div>
 
-      <div className="form-floating mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Mobile ..."
-          {...register("mobile", {
-            required: "Mobile number is required.",
-          })}
-        />
-        <label>Mobile</label>
+      <div className="row mb-2">
+        <div className="col">
+          <div className="form-floating">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Customer Name ..."
+              {...register("customerName", {
+                required: "Customer Name is required.",
+              })}
+            />
+            <label>Customer Name</label>
+          </div>
+        </div>
+
+        <div className="col">
+          <div className="form-floating">
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Email ..."
+              {...register("email", {
+                required: "Email is required.",
+              })}
+            />
+            <label>Email</label>
+          </div>
+        </div>
       </div>
 
       <button type="submit" className="btn btn-primary">
