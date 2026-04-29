@@ -5,6 +5,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import CheckoutForm from "./components/CheckoutForm";
 import DeliveryAddressForm from "./components/DeliveryAddressForm";
 import FoodDeliverMaster from "./components/FoodDeliverMaster";
+import SubmitButton from "@/components/controls/SubmitButton";
 
 const RenderCountComponent = RenderCount();
 
@@ -25,9 +26,14 @@ function FoodDeliveryForm() {
       },
     },
   });
-  const { handleSubmit } = methods;
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
 
-  function onSumbit(formData: FoodDeliveryFormType) {
+  async function onSumbit(formData: FoodDeliveryFormType) {
+    // setTimeout(() => {}, 3000);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     console.log("form data", formData);
   }
 
@@ -52,9 +58,7 @@ function FoodDeliveryForm() {
         <DeliveryAddressForm />
       </FormProvider>
 
-      <button type="submit" className="btn btn-primary">
-        Submit
-      </button>
+      <SubmitButton {...{ isSubmitting }}>Submit</SubmitButton>
     </form>
   );
 }
