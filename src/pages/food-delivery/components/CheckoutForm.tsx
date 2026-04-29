@@ -1,7 +1,7 @@
 import SelectField from "@/components/controls/SelectField";
 import RenderCount from "@/components/RenderCount";
 import type { CheckoutFormType, SelectOptionType } from "@/types";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useFormState } from "react-hook-form";
 
 // const paymentOptions: SelectOptionType[] = ["", "online", "COD"];
 const paymentOptions: SelectOptionType[] = [
@@ -21,10 +21,18 @@ const deliveryInOptions: SelectOptionType[] = [
 const RenderCountComponent = RenderCount();
 
 function CheckoutForm() {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext<CheckoutFormType>();
+  const { register } = useFormContext<CheckoutFormType>();
+
+  // The `name` control subscription scope (when to trigger re-render)
+  // But return formState includes all fields
+
+  // `exact` matches name instead of prefix match
+  // node_modules/react-hook-form/dist/index.esm.mjs 1168-1175 shouldSubscribeByName
+
+  const { errors } = useFormState<CheckoutFormType>({
+    name: ["paymentMethod", "deliveryIn"],
+    exact: true,
+  });
 
   return (
     <>
