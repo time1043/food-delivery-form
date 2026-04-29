@@ -14,7 +14,7 @@ function FoodDeliverMaster() {
 
   return (
     <>
-      <RenderCountComponent />
+      {/* <RenderCountComponent /> */}
 
       <div className="row mb-2">
         <div className="col">
