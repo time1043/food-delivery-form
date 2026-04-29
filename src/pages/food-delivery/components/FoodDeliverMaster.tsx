@@ -1,6 +1,9 @@
 import TextField from "@/components/controls/TextField";
+import RenderCount from "@/components/RenderCount";
 import type { FoodDeliverMasterFormType } from "@/types";
 import { useFormContext } from "react-hook-form";
+
+const RenderCountComponent = RenderCount();
 
 function FoodDeliverMaster() {
   const {
@@ -10,6 +13,8 @@ function FoodDeliverMaster() {
 
   return (
     <>
+      <RenderCountComponent />
+
       <div className="row mb-2">
         <div className="col">
           <TextField label="Order No" disabled {...register("orderNo")} />

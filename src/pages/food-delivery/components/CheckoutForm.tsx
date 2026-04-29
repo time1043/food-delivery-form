@@ -1,4 +1,5 @@
 import SelectField from "@/components/controls/SelectField";
+import RenderCount from "@/components/RenderCount";
 import type { CheckoutFormType, SelectOptionType } from "@/types";
 import { useFormContext } from "react-hook-form";
 
@@ -17,6 +18,8 @@ const deliveryInOptions: SelectOptionType[] = [
   { value: 180, text: "3 Hour" },
 ];
 
+const RenderCountComponent = RenderCount();
+
 function CheckoutForm() {
   const {
     register,
@@ -25,7 +28,9 @@ function CheckoutForm() {
 
   return (
     <>
+      <RenderCountComponent />
       <div className="text-start fw-bold mt-4 mb-2">Checkout Details</div>
+
       <div className="row mb-2">
         <div className="col">
           <SelectField
