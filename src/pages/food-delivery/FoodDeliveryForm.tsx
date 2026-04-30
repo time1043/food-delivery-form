@@ -26,10 +26,7 @@ function FoodDeliveryForm() {
       },
     },
   });
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  const { handleSubmit, control } = methods;
 
   async function onSumbit(formData: FoodDeliveryFormType) {
     // setTimeout(() => {}, 3000);
@@ -58,7 +55,7 @@ function FoodDeliveryForm() {
         <DeliveryAddressForm />
       </FormProvider>
 
-      <SubmitButton {...{ isSubmitting }}>Submit</SubmitButton>
+      <SubmitButton {...{ control }}>Submit</SubmitButton>
     </form>
   );
 }

@@ -1,19 +1,28 @@
 import type { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import RenderCount from "../RenderCount";
+import { useFormState, type Control } from "react-hook-form";
 
 type SubmitButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
   PropsWithChildren & {
-    isSubmitting?: boolean;
+    control?: Control<any, any>;
   };
 
 const RenderCountComponent = RenderCount();
 
 function SubmitButton({
-  isSubmitting = undefined,
+  control = undefined,
   className = "btn-light",
   children,
   ...other
 }: SubmitButtonProps) {
+  // Without any fields
+  // Way 1: wrapped with FormProvider (passing entire object) 🙅
+  // Way 2 : useFormState's control prop ✅
+
+  // https://react.dev/reference/rules/rules-of-hooks
+  let isSubmitting = undefined;
+  if (control) ({ isSubmitting } = useFormState({ control }));
+
   return (
     <>
       <RenderCountComponent />
