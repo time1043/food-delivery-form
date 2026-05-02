@@ -20,24 +20,33 @@ function SubmitButton({
   // Way 2 : useFormState's control prop ✅
 
   // https://react.dev/reference/rules/rules-of-hooks
-  let isSubmitting = undefined;
-  if (control) ({ isSubmitting } = useFormState({ control }));
+  return control ? (
+    <WithControl {...{ className, control, ...other }}>{children}</WithControl>
+  ) : (
+    <WithoutControl {...{ className, ...other }}>{children}</WithoutControl>
+  );
+}
 
+function WithControl({
+  control,
+  className,
+  children,
+  ...other
+}: SubmitButtonProps) {
+  const { isSubmitting } = useFormState({ control });
   return (
     <>
       <RenderCountComponent />
-
       <button
         type="submit"
         className={`btn ${className}`}
-        disabled={isSubmitting == undefined ? false : isSubmitting}
+        disabled={isSubmitting}
         {...other}
       >
-        {isSubmitting === undefined || isSubmitting === false ? (
+        {isSubmitting === false ? (
           children
         ) : (
           <>
-            {/* https://getbootstrap.com/docs/5.3/components/spinners/#buttons */}
             <span
               className="spinner-border spinner-border-sm"
               aria-hidden="true"
@@ -47,6 +56,21 @@ function SubmitButton({
             </span>
           </>
         )}
+      </button>
+    </>
+  );
+}
+
+function WithoutControl({
+  className,
+  children,
+  ...other
+}: ButtonHTMLAttributes<HTMLButtonElement> & PropsWithChildren) {
+  return (
+    <>
+      <RenderCountComponent />
+      <button type="submit" className={`btn ${className}`} {...other}>
+        {children}
       </button>
     </>
   );
