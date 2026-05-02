@@ -6,8 +6,12 @@ import { useFormContext, useFormState } from "react-hook-form";
 const RenderCountComponent = RenderCount();
 
 function DeliveryAddressForm() {
-  const { register } = useFormContext<{ address: DeliveryAddressFormType }>();
-  const { errors } = useFormState<{ address: DeliveryAddressFormType }>({
+  const { register, getFieldState } = useFormContext<{
+    address: DeliveryAddressFormType;
+  }>();
+  const { errors, touchedFields } = useFormState<{
+    address: DeliveryAddressFormType;
+  }>({
     name: "address",
   });
 
@@ -43,6 +47,17 @@ function DeliveryAddressForm() {
         <div className="col">
           <TextField label="State" {...register("address.state")} />
         </div>
+      </div>
+
+      <div>
+        {/* getFieldState doesn't have re-render, re-render needed with subscribing touchedFields */}
+        {getFieldState("address").isTouched
+          ? "address node is touched"
+          : "address node isn't touched"}
+        {/* passing formState will trigger re-render */}
+        {/* {getFieldState("address", formState).isTouched
+          ? "address node is touched"
+          : "address node isn't touched"} */}
       </div>
     </>
   );

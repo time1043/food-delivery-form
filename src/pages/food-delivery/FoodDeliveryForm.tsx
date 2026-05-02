@@ -26,7 +26,7 @@ function FoodDeliveryForm() {
       },
     },
   });
-  const { handleSubmit, control } = methods;
+  const { handleSubmit, control, getFieldState } = methods;
 
   async function onSumbit(formData: FoodDeliveryFormType) {
     // setTimeout(() => {}, 3000);
@@ -35,7 +35,9 @@ function FoodDeliveryForm() {
   }
 
   function onError(errors: FieldErrors<FoodDeliveryFormType>) {
-    console.log("errors", errors);
+    // console.log("errors", errors);
+    // (name: string, formState?: Object) => ({isDirty, isTouched, invalid, error})
+    console.log(getFieldState("address.city"));
   }
 
   return (
